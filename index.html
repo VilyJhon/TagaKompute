@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#070b24">
+  <script>try{if(localStorage.getItem("gradingSheet.theme")==="light")document.documentElement.dataset.theme="light"}catch(e){}</script>
+  <title>TagaKompute</title>
+  <link rel="icon" type="image/png" href="umak-seal.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="schedule.css">
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="grading.css">
+  <link rel="stylesheet" href="umak.css">
+</head>
+<body>
+
+  <!-- ===================== LOGIN ===================== -->
+  <section id="gate" class="gate">
+    <div class="gate-bg" aria-hidden="true">
+      <span class="orb orb-1"></span>
+      <span class="orb orb-2"></span>
+    </div>
+
+    <div class="gate-shell">
+      <!-- Brand panel -->
+      <aside class="brand">
+        <div class="lockup">
+          <img class="lockup-mark" data-logo="mark" src="umak-seal.png" alt="">
+          <div class="lockup-text">
+            <b>Taga<span>Kompute</span></b>
+            <small>University of Makati</small>
+          </div>
+        </div>
+        <h1 class="sr-only">TagaKompute</h1>
+        <p class="tagline">Your UMak grades and GWA, computed the right way. Track, analyze, achieve.</p>
+        <div class="peek" aria-hidden="true">
+          <div class="peek-ring">
+            <svg viewBox="0 0 60 60"><circle class="pk-bg" cx="30" cy="30" r="25"/><circle class="pk-fg" cx="30" cy="30" r="25" transform="rotate(-90 30 30)"/></svg>
+            <b>1.45</b>
+          </div>
+          <div class="peek-text"><span class="peek-tag">Superior</span><small>Watch your GWA update live as you type each grade.</small></div>
+        </div>
+        <ul class="features">
+          <li><i></i>Works for any college or program</li>
+          <li><i></i>Add your own subjects and units</li>
+          <li><i></i>Midterm &amp; Finals with your own percentage split</li>
+          <li><i></i>University of Makati grading basis, automatic GWA</li>
+          <li><i></i>A saved record for every Student ID</li>
+        </ul>
+        <small class="brand-foot">University of Makati &middot; A.D. 1972</small>
+      </aside>
+
+      <!-- Login card -->
+      <main class="login-card">
+        <h2>Welcome</h2>
+        <p class="lead">Enter your Student ID to open or create your grading record.</p>
+
+        <form id="gateForm" autocomplete="off" novalidate>
+          <label for="studentId">Student ID</label>
+          <div class="field">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M14 10h4M14 14h4M6.5 16c.6-1.3 1.6-2 2.5-2s1.9.7 2.5 2"/></svg>
+            <input id="studentId" type="text" maxlength="20" placeholder="e.g. A12654117">
+          </div>
+
+          <label for="studentName">Full name <span class="opt">optional</span></label>
+          <div class="field">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4.5-6 8-6s7 2 8 6"/></svg>
+            <input id="studentName" type="text" maxlength="60" placeholder="Last name, First name">
+          </div>
+
+          <p id="gateError" class="error" hidden></p>
+
+          <button type="submit" class="primary">
+            <span>Continue</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+        </form>
+
+        <div class="records">
+          <h3>Saved records</h3>
+          <div id="recordList"></div>
+        </div>
+      </main>
+    </div>
+  </section>
+
+  <!-- ===================== SETUP ===================== -->
+  <section id="setup" class="setup" hidden>
+    <div class="setup-card">
+      <div class="setup-head">
+        <span class="logo-img"><img data-logo="mark" src="umak-seal.png" alt="TagaKompute logo"></span>
+        <div>
+          <h2 id="setupTitle">Set up your program</h2>
+          <p class="lead">Enter your program, then add each subject with its units. You can edit this anytime.</p>
+        </div>
+      </div>
+
+      <div class="section-label step"><span>Your program</span></div>
+      <div class="setup-grid">
+        <div>
+          <label for="programInput">Program / Course</label>
+          <div class="field plain"><input id="programInput" type="text" maxlength="80" placeholder="e.g. Bachelor of Science in Nursing"></div>
+        </div>
+        <div>
+          <label for="termInput">Year &amp; term <span class="opt">optional</span></label>
+          <div class="field plain"><input id="termInput" type="text" maxlength="40" placeholder="e.g. 1st Year - 1st Sem"></div>
+        </div>
+      </div>
+
+      <div class="section-label step"><span>Quick fill</span></div>
+      <div class="cor-box">
+        <div class="cor-text">
+          <svg class="cor-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3M7 12h10"/></svg>
+          <b>Scan your COR</b>
+          <span>Upload, drop or paste (Ctrl+V) a photo or screenshot of your COR (up to 4 images). Subjects, codes, units, program, year and name are filled in for you.</span>
+        </div>
+        <input id="corFile" type="file" accept="image/*" multiple hidden>
+        <button id="corBtn" type="button" class="ghost">Upload COR photo / screenshot</button>
+        <p id="corStatus" class="cor-status" hidden></p>
+        <div id="corReview" class="cor-review" hidden>
+          <p class="cor-review-head">Set each subject's type and whether it counts in your GWA, then add them.</p>
+          <div id="corReviewList"></div>
+          <div class="cor-review-actions">
+            <button id="corReviewCancel" type="button" class="ghost">Cancel</button>
+            <button id="corReviewAdd" type="button" class="solid">Add subjects</button>
+          </div>
+        </div>
+        <details id="corRaw" class="cor-raw" hidden>
+          <summary>Show recognized text</summary>
+          <pre id="corRawText"></pre>
+        </details>
+      </div>
+
+      <div class="section-label step"><span>Subjects</span></div>
+      <div id="subjectEditor"></div>
+
+      <button id="addSubject" class="ghost add" type="button">+ Add subject</button>
+
+      <p id="setupError" class="error" hidden></p>
+
+      <div class="setup-bar">
+        <p class="setup-total">Units counted: <b id="setupUnits">0</b></p>
+        <div class="setup-actions">
+          <button id="setupDelete" class="ghost" type="button" hidden>Delete term</button>
+          <button id="setupCancel" class="ghost" type="button" hidden>Cancel</button>
+          <button id="setupSave" class="solid" type="button">Save &amp; continue</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== APP ===================== -->
+  <div id="app" hidden>
+    <header class="navbar">
+      <div class="navbar-inner">
+        <div class="nav-brand">
+          <span class="logo-img"><img data-logo="mark" src="umak-seal.png" alt="TagaKompute logo"></span>
+          <div>
+            <strong id="navTitle">TagaKompute</strong>
+            <small id="navSub"></small>
+          </div>
+        </div>
+
+        <div class="student">
+          <button class="avatar avatar-btn" id="avatar" type="button" title="Edit profile" aria-label="Edit profile"></button>
+          <div class="student-text" id="studentText" title="Edit profile">
+            <div class="student-id" id="chipId"></div>
+            <div class="student-name" id="chipName"></div>
+          </div>
+          <button id="switchBtn" class="ghost" type="button">Switch</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="wrap">
+      <div class="terms-bar" id="termsBar"></div>
+      <div class="seg" id="seg" data-mode="pct">
+        <button id="modePct" class="active" type="button">Percentage (1-100%)</button>
+        <button id="modeGrade" type="button">Grade (1.00-5.00)</button>
+      </div>
+
+      <section class="hero" id="hero" data-tone="none">
+        <div class="hero-ring">
+          <svg viewBox="0 0 120 120" aria-hidden="true">
+            <defs>
+              <linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff3a3"/><stop offset="1" stop-color="#ffd200"/></linearGradient>
+              <linearGradient id="ringPass" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#bbf7d0"/><stop offset="1" stop-color="#22c55e"/></linearGradient>
+              <linearGradient id="ringFail" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fecaca"/><stop offset="1" stop-color="#ef4444"/></linearGradient>
+            </defs>
+            <circle class="ring-bg" cx="60" cy="60" r="52"/>
+            <circle class="ring-fg" id="ringFg" cx="60" cy="60" r="52" transform="rotate(-90 60 60)"/>
+          </svg>
+          <div class="ring-center"><small id="ringLabel">GWA</small><b id="gwa">&ndash;</b></div>
+        </div>
+        <div class="hero-info">
+          <div class="hero-toggle" id="heroToggle" hidden>
+            <button type="button" data-view="term" class="on">This term</button>
+            <button type="button" data-view="cum">All terms</button>
+          </div>
+          <span class="hero-tag" id="heroTag">Awaiting grades</span>
+          <div class="hero-avg"><small>Average</small><b id="avg">&ndash;</b></div>
+          <p id="heroNote">Enter a grade below and your standing appears here.</p>
+        </div>
+        <div class="trend" id="trend" hidden></div>
+      </section>
+
+      <section class="mascot" id="mascot" data-mood="ready" aria-label="Grade mascot">
+        <button class="mascot-fig" id="mascotFig" type="button" aria-label="Tap the mascot"><img src="mascot/ready-0.jpg" alt=""></button>
+        <div class="mascot-body">
+          <div class="mascot-top"><span class="mascot-mood" id="mascotMood">Ready</span><small>Tap me</small></div>
+          <p class="mascot-msg" id="mascotMsg" aria-live="polite"></p>
+          <div class="mascot-actions">
+            <button type="button" data-say="talk">Talk</button>
+            <button type="button" data-say="cheer">Encourage me</button>
+            <button type="button" data-say="focus">Focus tip</button>
+          </div>
+        </div>
+      </section>
+
+      <div class="stats stats-top">
+        <div class="stat"><small>Passed</small><b id="np" class="g">0</b></div>
+        <div class="stat"><small>Failed</small><b id="nf" class="r">0</b></div>
+      </div>
+
+      <div class="stats stats-sub">
+        <div class="stat"><small>Major subjects GWA</small><b id="majorGwa">&ndash;</b></div>
+        <div class="stat"><small>Minor subjects GWA</small><b id="minorGwa">&ndash;</b></div>
+        <div class="stat stat-wide" id="cumStat" hidden><small>Cumulative GWA &middot; all terms</small><b id="cumGwa">&ndash;</b></div>
+      </div>
+
+      <div class="progress">
+        <div class="progress-head"><span>Units earned</span><span id="unitsText">0 / 0</span></div>
+        <div class="bar"><i id="prog"></i></div>
+      </div>
+
+      <div class="list" id="list"></div>
+
+      <div class="foot">
+        <span id="rule"></span>
+        <span class="actions">
+          <button id="editBtn" class="ghost" type="button">Edit subjects</button>
+          <button id="saveBtn" class="solid" type="button">Save record</button>
+          <button id="reset" class="ghost" type="button">Clear grades</button>
+        </span>
+      </div>
+    </main>
+  </div>
+
+  <!-- ===================== PROFILE ===================== -->
+  <div id="profileModal" class="modal" hidden>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="profileTitle">
+      <h3 id="profileTitle">Student profile</h3>
+      <p class="lead">Add your photo and update your name. Both are saved with this Student ID.</p>
+
+      <div class="profile-photo">
+        <div class="avatar avatar-xl" id="profileAvatar"></div>
+      </div>
+      <input id="photoFile" type="file" accept="image/*" hidden>
+      <div class="profile-photo-actions">
+        <button id="photoUpload" class="ghost" type="button">Upload photo</button>
+        <button id="photoRemove" class="ghost" type="button">Remove photo</button>
+      </div>
+
+      <label for="profileName">Full name</label>
+      <div class="field plain"><input id="profileName" type="text" maxlength="60" placeholder="Last name, First name" autocomplete="off"></div>
+      <p class="profile-id">Student ID <b id="profileId"></b></p>
+
+      <div class="modal-actions">
+        <button id="profileCancel" class="ghost" type="button">Cancel</button>
+        <button id="profileSave" class="solid" type="button">Save profile</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js"></script>
+  <script src="script.js"></script>
+  <script src="schedule.js"></script>
+  <script src="mascot.js"></script>
+  <script src="theme.js"></script>
+</body>
+</html>
